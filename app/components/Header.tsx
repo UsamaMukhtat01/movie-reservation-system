@@ -55,8 +55,8 @@ export default function Header() {
     <div className="bg-gray-100 items-center sticky top-0 z-50">
       <nav className="flex justify-between gap-1">
         <div className="m-4">
-          <header className="text-4xl font-medium shadow-xl relative text-[#f7052d]">
-            <Link href="/">MRS</Link>
+          <header className="text-4xl font-bold relative text-black">
+            <Link href="/">LOGO</Link>
           </header>
         </div>
 
