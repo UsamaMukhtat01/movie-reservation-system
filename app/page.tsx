@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 // import { getMovies } from "../api";
 import { Spin } from "antd";
 import Link from "next/link";
+import { getMovies } from "./api";
 
 export default function Home() {
   const [movies, setMovies] = useState([] as any);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    const getMovies = null as any; // Replace with actual import or implementation
+    // const getMovies = null as any; // Replace with actual import or implementation
     const allMovies = async () => {
       setIsLoading(true);
       try {

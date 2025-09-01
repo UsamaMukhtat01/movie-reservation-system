@@ -7,7 +7,7 @@ export const signupApi = async (formData : any) =>{
     password: formData.password,
   };
   try {
-    const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
+    const response = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
@@ -43,7 +43,7 @@ export const signinApi = async (formData : any)=>{
       }
   
       try{
-        const response = await fetch(`${API_BASE_URL}/api/auth/signin`,{
+        const response = await fetch(`/api/auth/signin`,{
           method: "POST",
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify(formData), // We can send the data directly from formData or by creating other function. Like below
@@ -59,7 +59,7 @@ export const getMovieDetail = async (movieId :any)=>{
   try{
     const token = localStorage.getItem('access_token')
     // console.log(token)
-    const response = await fetch(`${API_BASE_URL}/api/user/getMovieDetail/${movieId}`, {
+    const response = await fetch(`/api/movie/getMovieDetail/${movieId}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export const getMovies = async ()=>{
   try{
     const token = localStorage.getItem('access_token')
     // console.log(token)
-    const response = await fetch(`${API_BASE_URL}/api/user/getMovies`, {
+    const response = await fetch(`/api/movie/getMovies`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export const createMovie = async (requestBody : any)=>{
   try{
     const token = localStorage.getItem('access_token')
     // console.log(token)
-    const response = await fetch(`${API_BASE_URL}/api/user/createMovie/`, {
+    const response = await fetch(`/api/movie/createMovie/`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export const deletMovie = async (movieId : string) =>{
   try{
     const token = localStorage.getItem('access_token')
     // console.log(token)
-    const response = await fetch(`${API_BASE_URL}/api/user/deleteMovie/${movieId}`, {
+    const response = await fetch(`/api/user/deleteMovie/${movieId}`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json',

@@ -11,10 +11,7 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
-  const [error, setError] = useState(null);
-  const [userFailedMessage, setUserFailureMessage] = useState("");
-  const [userSuccessMessage, setUserSuccessMessage] = useState("");
+  const [api, contextHolder] = notification.useNotification();
 
   const handleChange = (e : any) => {
     const { name, value } = e.target;
@@ -35,13 +32,14 @@ export default function SignUp() {
     try {
       setIsLoading(true);
       const result = await signupApi(formData);
+      console.log("result", result)
       if (result.success === true) {
         // setUserSuccessMessage(result.message);
         // setTimeout(() => {
         //   setUserSuccessMessage("");
         // }, 3000);
         // return;
-        notification.success({
+        api.success({
           message: "Successful",
           description: result.message,
           duration: 3,
@@ -54,7 +52,7 @@ export default function SignUp() {
         //   setUserFailureMessage("");
         // }, 3000);
         // return;
-        notification.error({
+        api.error({
           message: "Failed",
           description: result.message,
           duration: 3,
@@ -69,6 +67,7 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col w-fit m-[5%]">
+      {contextHolder}
       <div className="flex flex-col gap-4 pb-6 text-[#2C363F] font-semibold">
         <p className="text-4xl">
           Movie Reservation <br />
