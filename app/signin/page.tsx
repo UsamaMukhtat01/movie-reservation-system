@@ -24,8 +24,6 @@ export default function Signin() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string>("");
-  const [signinMessage, setSigninMessage] = useState<string>("");
   const navigate = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

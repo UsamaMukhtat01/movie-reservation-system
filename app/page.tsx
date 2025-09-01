@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Spin } from "antd";
 import Link from "next/link";
 import { getMovies } from "./api";
+import Image from "next/image";
 
 // Define the Movie type
 interface Movie {
@@ -58,7 +59,7 @@ export default function Home() {
                     className="w-[280px] justify-center border border-gray-200 rounded-lg shadow"
                   >
                     <Link href={`/movieDetails/${movie._id}`}>
-                      <img
+                      <Image
                         className="rounded-t-lg"
                         src="/src/image/MRS.png"
                         alt={movie.title}
@@ -93,7 +94,7 @@ export default function Home() {
                     className="w-[280px] justify-center border border-gray-200 rounded-lg shadow"
                   >
                     <Link href={`/movieDetails/${movie._id}`}>
-                      <img
+                      <Image
                         className="rounded-t-lg"
                         src="/src/image/MRS.png"
                         alt={movie.title}

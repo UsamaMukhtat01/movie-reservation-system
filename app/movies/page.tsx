@@ -4,6 +4,7 @@ import { Modal, notification, Spin } from "antd";
 import Loader from "../components/Loader";
 import { deletMovie, getMovies } from "../api";
 import Link from "next/link";
+import Image from "next/image";
 
 // Define the shape of a Movie
 interface Movie {
@@ -100,7 +101,7 @@ export default function Movies() {
                 className="flex flex-row w-[800px] border-t border-r border-b p-1 border-gray-200 rounded-lg "
               >
                 <Link href={`/movieDetails/${movie._id}`}>
-                  <img
+                  <Image
                     className="rounded-t-lg w-[200px]"
                     src="/src/image/MRS.png"
                     alt=""

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getMovieDetail } from "../../api";
 import { Spin } from "antd";
+import Image from "next/image";
 
 // Define types for API response
 interface ShowTime {
@@ -59,7 +60,7 @@ export default function MoviesDetails({ params }: MoviesDetailsProps) {
     <div className="p-5">
       <div className="flex flex-col px-[70px] gap-3">
         <div className="flex flex-col">
-          <img
+          <Image
             className="w-full h-[80vh] object-cover"
             src="/src/image/MRS.png"
             alt="Movie poster"
