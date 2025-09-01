@@ -1,14 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Movie from "@/lib/models/Movie";
 import { connectDB } from "@/lib/config/db";
 
-export async function GET(req: Request,
-  { params }: { params: { id: string } }
+export async function GET( request: NextRequest,
+  context: { params: Promise<{ id: string }> } 
 ) {
   try {
+    const { id } = await context.params;
     await connectDB();
 
-    const movieDetail = await Movie.findById(params.id);
+    const movieDetail = await Movie.findById(id);
     if (!movieDetail) {
       return NextResponse.json(
         { success: false, message: "Movie not found" },

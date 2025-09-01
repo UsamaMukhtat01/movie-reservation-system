@@ -1,44 +1,55 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { signinApi } from "../api";
 import { notification } from "antd";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Loader from "../components/Loader";
 
+interface SigninFormData {
+  email: string;
+  password: string;
+}
+
+interface SigninResponse {
+  success: boolean;
+  message: string;
+  token?: string;
+  user?: unknown; // update with your real user type if available
+}
+
 export default function Signin() {
-  const [formData, setFormData] = useState({} as any);
-  const [error, setError] = useState("");
-  const [signinMessage, setSigninMessage] = useState("");
+  const [formData, setFormData] = useState<SigninFormData>({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState<string>("");
+  const [signinMessage, setSigninMessage] = useState<string>("");
   const navigate = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
-  const handleChange = (e : any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev : any) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  // console.log(formData)
 
-  const handleSignIn = async (e : any) => {
+  const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const result = await signinApi(formData);
-      // console.log(result)
-      if (result.success === true) {
-        // This code is being commented because when user becomes signedIn, we are navigating the user to home page and he will not see the message due to instatnly navigating to home page.
+      const result: SigninResponse = await signinApi(formData);
 
-        // setSigninMessage(result.message)
-        // setTimeout(()=>{
-        //   setSigninMessage('')
-        // }, 3000)
-        localStorage.setItem('access_token', result.token);
-        localStorage.setItem("user", JSON.stringify(result.user));
+      if (result.success) {
+        if (result.token) {
+          localStorage.setItem("access_token", result.token);
+        }
+        if (result.user) {
+          localStorage.setItem("user", JSON.stringify(result.user));
+        }
         notification.success({
           message: "Successful",
           description: result.message,
@@ -46,24 +57,18 @@ export default function Signin() {
         });
         setIsLoading(false);
         navigate.push("/");
-      }
-      if (result.success === false) {
+      } else {
         setIsLoading(false);
         notification.error({
           message: "Failed",
           description: result.message,
           duration: 3,
         });
-        // setError(result.message)
-        // setTimeout(()=>{
-        //   setError('')
-        // }, 3000)
       }
     } catch (error) {
       setIsLoading(false);
       console.error(error);
     }
-    // console.log(result.token)
   };
 
   return (
@@ -77,61 +82,47 @@ export default function Signin() {
       </div>
       <div className="bg-gradient-to-br from-slate-500 via-sky-200 to-green-200 flex justify-center w-fit p-20 mx-auto rounded-md border-2 signin-bg-img">
         <form onSubmit={handleSignIn} className="flex flex-col gap-4">
-          <p className="text-4xl font-semibold text-center mb-5">SignIn</p>
+          <p className="text-4xl font-semibold text-center mb-5">Sign In</p>
           <div className="flex flex-col gap-7">
             <div className="text-[#2C363F] items-center flex sm:flex-row gap-7 justify-between">
-              <label className="text-2xl font-medium">
-                Email:
-              </label>
+              <label className="text-2xl font-medium">Email:</label>
               <input
-                type="text"
+                type="email"
                 className="w-[300px] border-2 rounded-[3px] p-3 text-xl"
                 placeholder="Email"
                 name="email"
-                value={formData?.email || ""}
+                value={formData.email}
                 onChange={handleChange}
+                required
               />
             </div>
             <div className="text-[#2C363F] items-center flex sm:flex-row gap-7 justify-between">
-              <label className="text-2xl font-medium">
-                Passowrd:
-              </label>
+              <label className="text-2xl font-medium">Password:</label>
               <input
-                type="text"
+                type="password"
                 className="w-[300px] border-2 rounded-[3px] p-3 text-xl"
                 placeholder="Password"
                 name="password"
-                value={formData?.password || ""}
+                value={formData.password}
                 onChange={handleChange}
+                required
               />
             </div>
 
-            {/* *******************Commented the below div tag because we using antd package to show success of failed messages */}
-
-            {/* <div>
-              {error && (
-                <p className="text-red-600 text-lg text-left">{error}</p>
-              )}
-              {signinMessage && (
-                <p className="text-green-600 text-right text-lg">
-                  {signinMessage}
-                </p>
-              )}
-            </div> */}
             <div className="flex mx-auto">
               <button
                 type="submit"
-                className="w-[400px] text-[#2C363F] border-2 border-[#2C363F] rounded-[3px] p-3 bg-[] uppercase font-semibold text-2xl"
+                className="w-[400px] text-[#2C363F] border-2 border-[#2C363F] rounded-[3px] p-3 uppercase font-semibold text-2xl"
               >
-                {isLoading? (<Loader/>): "Sign In"}
+                {isLoading ? <Loader /> : "Sign In"}
               </button>
             </div>
           </div>
           <div className="mt-5">
             <p className="text-lg">
-              Dont have an account?{" "}
+              Don’t have an account?{" "}
               <Link href="/signup">
-                <span className="text-blue-500 underline">SignUp</span>
+                <span className="text-blue-500 underline">Sign Up</span>
               </Link>
             </p>
           </div>

@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function SignUp() {
   const [formData, setFormData] = useState({} as any);
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useRouter();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
@@ -22,48 +22,97 @@ export default function SignUp() {
   };
   // console.log(formData);
 
-  const handleSubmit = async (e : any) => {
-    e.preventDefault();
-    const userData = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-    };
-    try {
-      setIsLoading(true);
-      const result = await signupApi(formData);
-      console.log("result", result)
-      if (result.success === true) {
-        // setUserSuccessMessage(result.message);
-        // setTimeout(() => {
-        //   setUserSuccessMessage("");
-        // }, 3000);
-        // return;
-        api.success({
-          message: "Successful",
-          description: result.message,
-          duration: 3,
-        });
-        navigate.push('/signin')
-      }
-      if (result.success === false){
-        // setUserFailureMessage(result.message);
-        // setTimeout(() => {
-        //   setUserFailureMessage("");
-        // }, 3000);
-        // return;
-        api.error({
-          message: "Failed",
-          description: result.message,
-          duration: 3,
-        });
-      }
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Network error:", error);
-    }
+  // const handleSubmit = async (e : any) => {
+  //   e.preventDefault();
+  //   const userData = {
+  //     name: formData.name,
+  //     email: formData.email,
+  //     password: formData.password,
+  //   };
+  //   try {
+  //     setIsLoading(true);
+  //     const result = await signupApi(formData);
+  //     console.log("result", result)
+  //     if (result.success === true) {
+  //       // setUserSuccessMessage(result.message);
+  //       // setTimeout(() => {
+  //       //   setUserSuccessMessage("");
+  //       // }, 3000);
+  //       // return;
+  //       api.success({
+  //         message: "Successful",
+  //         description: result.message,
+  //         duration: 3,
+  //       });
+  //       navigate.push('/signin')
+  //     }
+  //     if (result.success === false){
+  //       // setUserFailureMessage(result.message);
+  //       // setTimeout(() => {
+  //       //   setUserFailureMessage("");
+  //       // }, 3000);
+  //       // return;
+  //       api.error({
+  //         message: "Failed",
+  //         description: result.message,
+  //         duration: 3,
+  //       });
+  //     }
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     console.error("Network error:", error);
+  //   }
+  // };
+
+  const handleSubmit = async (e: any) => {
+  e.preventDefault();
+
+  if (formData.password !== confirmPassword) {
+    api.error({
+      message: "Failed",
+      description: "Passwords do not match",
+      duration: 3,
+    });
+    return;
+  }
+
+  const userData = {
+    name: formData.name,
+    email: formData.email,
+    password: formData.password,
   };
+
+  try {
+    setIsLoading(true);
+    const result = await signupApi(userData);
+
+    if (result.success) {
+      api.success({
+        message: "Successful",
+        description: result.message,
+        duration: 3,
+      });
+      router.push("/signin");
+    } else {
+      api.error({
+        message: "Failed",
+        description: result.message,
+        duration: 3,
+      });
+    }
+  } catch (error) {
+    api.error({
+      message: "Error",
+      description: "Something went wrong. Please try again later.",
+      duration: 3,
+    });
+    console.error("Network error:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="flex flex-col w-fit m-[5%]">

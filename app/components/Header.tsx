@@ -1,14 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode"; // ✅ import JwtPayload type
 import { notification } from "antd";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // ✅ correct import for Next.js App Router
+import { useRouter } from "next/navigation";
+
+// Extend JwtPayload to include custom claims if needed
+interface CustomJwtPayload extends JwtPayload {
+  exp?: number;
+  // add other fields like `id`, `email`, `role`, etc. if your token has them
+}
+
+interface HeaderLink {
+  label: string;
+  path: string;
+}
 
 export default function Header() {
-  const router = useRouter(); // ✅ useRouter hook
-  const [authenticated, setAuthenticated] = useState(false);
+  const router = useRouter();
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
 
   // ********************* Sign Out & Token Expiry Handling
   useEffect(() => {
@@ -16,10 +27,10 @@ export default function Header() {
 
     if (userToken) {
       try {
-        const decoded: any = jwtDecode(userToken);
+        const decoded = jwtDecode<CustomJwtPayload>(userToken);
         const currentTime = Date.now() / 1000; // Current time in seconds
 
-        if (decoded?.exp < currentTime) {
+        if (decoded?.exp && decoded.exp < currentTime) {
           console.log("Token has expired. Clearing localStorage...");
           localStorage.removeItem("access_token");
         }
@@ -29,10 +40,10 @@ export default function Header() {
       }
     }
 
-    setAuthenticated(!!userToken); // ✅ simplified check
-  }, []); // ✅ run once after mount
+    setAuthenticated(!!userToken);
+  }, []);
 
-  const headersLinks = [
+  const headersLinks: HeaderLink[] = [
     { label: "Home", path: "/" },
     { label: "About", path: "/about" },
     { label: "Contact", path: "/contact" },
@@ -67,14 +78,14 @@ export default function Header() {
             <p
               className="bg-[#296192] hover:bg-[#296192a5] cursor-pointer px-5 py-2 text-white rounded-md text-lg"
               onClick={() => {
-                localStorage.removeItem("access_token"); // ✅ clear only token
+                localStorage.removeItem("access_token");
                 setAuthenticated(false);
                 notification.success({
                   message: "Success",
                   description: "Signed out successfully!",
                   duration: 3,
                 });
-                router.push("/"); // ✅ correct navigation in Next.js
+                router.push("/");
               }}
             >
               Sign Out
