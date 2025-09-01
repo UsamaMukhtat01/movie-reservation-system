@@ -13,10 +13,16 @@ export async function GET() {
       count: allMovies.length,
       data: allMovies,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching movies:", error);
+
+    let errorMessage = "Failed to fetch movies";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     return NextResponse.json(
-      { success: false, message: "Failed to fetch movies", error: error.message },
+      { success: false, message: errorMessage },
       { status: 500 }
     );
   }
