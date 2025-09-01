@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, notification, Spin } from "antd";
 import Loader from "../components/Loader";
-import { deletMovie, getMovies } from "../api";
+import { deleteMovie, getMovies } from "../api";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -49,7 +49,7 @@ export default function Movies() {
     try {
       if (!movieId) return;
       setDelLoading(true);
-      const response = await deletMovie(movieId);
+      const response = await deleteMovie(movieId);
       if (response?.success) {
         notification.success({
           message: "Success",
