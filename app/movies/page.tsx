@@ -20,7 +20,15 @@ interface User {
 }
 
 export default function Movies() {
-  const user: User = JSON.parse(localStorage.getItem("user") || "{}");
+  // const user: User = JSON.parse(localStorage.getItem("user") || "{}");
+  const [user, setUser] = useState<User>({});
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   // state types
   const [movies, setMovies] = useState<Movie[]>([]);
