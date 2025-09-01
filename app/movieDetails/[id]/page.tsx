@@ -62,8 +62,10 @@ export default function MoviesDetails({ params }: MoviesDetailsProps) {
         <div className="flex flex-col">
           <Image
             className="w-full h-[80vh] object-cover"
-            src="/src/image/MRS.png"
+            src="https://www.universalorlando.com/webdata/k2/en/us/files/Images/gds/uor-wwohp-logo-3-kids-clouds-key-art-hero-b.jpg"
             alt="Movie poster"
+            width={1000}
+            height={1000}
           />
         </div>
         <p className="text-4xl font-semibold">{movie.data.title}</p>

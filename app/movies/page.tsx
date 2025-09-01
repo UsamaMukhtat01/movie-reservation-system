@@ -111,17 +111,20 @@ export default function Movies() {
                 <Link href={`/movieDetails/${movie._id}`}>
                   <Image
                     className="rounded-t-lg w-[200px]"
-                    src="/src/image/MRS.png"
+                    // src="/public/image.avif"
+                    src="https://www.universalorlando.com/webdata/k2/en/us/files/Images/gds/uor-wwohp-logo-3-kids-clouds-key-art-hero-b.jpg"
                     alt=""
+                    width={200}
+                    height={50}
                   />
                 </Link>
                 <div className="p-5">
                   <Link href={`/movieDetails/${movie._id}`}>
-                    <h5 className="inline-flex line-clamp-1 mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                    <h5 className="inline-flex line-clamp-1 mb-2 text-2xl font-bold tracking-tight text-white">
                       {movie.title}
                     </h5>
                   </Link>
-                  <p className="w-[500px] line-clamp-1 mb-3 font-normal text-gray-700 dark:text-gray-400">
+                  <p className="w-[500px] line-clamp-1 mb-3 font-normal text-gray-700 text-white">
                     {movie.description}
                   </p>
                   <Link
